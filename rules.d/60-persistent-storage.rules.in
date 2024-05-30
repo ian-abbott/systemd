@@ -106,6 +106,14 @@ ATTRS{serial}=="?*", ENV{ID_SERIAL}="$attr{serial}"
 ENV{ID_NAME}=="?*", ENV{ID_SERIAL}=="?*", SYMLINK+="disk/by-id/memstick-$env{ID_NAME}_$env{ID_SERIAL}$env{.PART_SUFFIX}"
 LABEL="memstick_end"
 
+# UBI
+KERNEL=="ubi[0-9]*_[0-9]*", SUBSYSTEMS=="ubi", GOTO="ubi_start"
+GOTO="ubi_end"
+LABEL="ubi_start"
+ATTRS{name}=="?*", ENV{ID_NAME}="$attr{name}"
+ENV{ID_NAME}=="?*", SYMLINK+="ubi/by-name/$env{ID_NAME}"
+LABEL="ubi_end"
+
 # by-path
 ENV{DEVTYPE}=="disk", DEVPATH!="*/virtual/*", IMPORT{builtin}="path_id"
 ENV{DEVTYPE}=="disk", SUBSYSTEMS=="nvme-subsystem", IMPORT{builtin}="path_id"
